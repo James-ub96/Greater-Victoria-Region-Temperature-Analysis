@@ -1,0 +1,1050 @@
+%---------------------------------------
+% Coastline w/ Stations Plot
+%---------------------------------------
+
+
+figure(1)
+%p1 = plot(-(360 - AllHourly(:,1)),AllHourly(:,2),'o','linewidth',2)
+hold on
+p2 = plot(-(360 - AllHourly([33,7,15],1)),AllHourly([33,7,15],2),'o','MarkerFaceColor','r')
+p3 = plot(-(360 - 236.250),48.371,'o','MarkerFaceColor','r')
+p4 = plot(Coast(:,1),Coast(:,2),'k')
+hold off
+axis([-inf,inf,48.3,49])
+title('Victoria Weather Station Map')
+xlabel('Longitude')
+ylabel('Latitude')
+legend([p1,p2,p4],'Weather Station','Minute Data Stations','Coastline')
+
+%%
+%---------------------------------------
+% Plotting of Data Spikes
+%---------------------------------------
+figure(2)
+subplot(311)
+plot(A1,B1)
+hold on
+plot(A2,B2)
+plot(A3,B3)
+plot(A4,B4)
+hold off
+grid on
+datetick('x')
+title('Deep Cove Spike One')
+ylabel('Temperature','fontsize',8)
+
+subplot(312)
+plot(A1,B1)
+hold on
+plot(A2,B2)
+plot(A3,B3)
+plot(A4,B4)
+hold off
+grid on
+datetick('x')
+title('Deep Cove Spike Two')
+ylabel('Temperature','fontsize',8)
+
+subplot(313)
+plot(A1,B1)
+hold on
+plot(A2,B2)
+plot(A3,B3)
+plot(A4,B4)
+hold off
+grid on
+datetick('x')
+title('James Bay Spike')
+ylabel('Temperature','fontsize',8)
+
+%%
+%---------------------------------------
+% Minute Data Raw
+%---------------------------------------
+A1 = DeepCoveraw(:,1);
+B1 = DeepCoveraw(:,2);
+A2 = JamesBayraw(:,1);
+B2 = JamesBayraw(:,2);
+A3 = JohnMuirraw(:,1);
+B3 = JohnMuirraw(:,2);
+A4 = UVicISCraw(:,1);
+B4 = UVicISCraw(:,2);
+
+figure(2)
+subplot(211)
+plot(A1,B1)
+hold on
+plot(A2,B2)
+plot(A3,B3)
+plot(A4,B4)
+hold off
+grid on
+datetick('x')
+title('Raw Minute Temperature Data')
+ylabel('Temperature (Degree Celcius)','fontsize',8)
+legend('Deep Cove', 'James Bay', 'John Muir', 'UVic ISC','location','northwest')
+
+subplot(212)
+hold on
+for n = 1:35
+    N = 1:length(AllHourly(n,:));
+    plot(N,AllHourly(n,:))
+end
+hold off
+title('Hourly Temperature Data')
+xlabel('Time: Jan 2008 > Dec 2010')
+ylabel('Temperature')
+axis([0,26277,-15,50])
+set(gca, 'XTickLabelMode', 'manual', 'XTickLabel', []);
+
+%%
+%---------------------------------------
+% Minute Data Cleaned
+%---------------------------------------
+
+A1 = DeepCoverawCopy(:,1);
+B1 = DeepCoverawCopy(:,2);
+A2 = JamesBayrawCopy(:,1);
+B2 = JamesBayrawCopy(:,2);
+A3 = JohnMuirraw(:,1);
+B3 = JohnMuirraw(:,2);
+A4 = UVicISCraw(:,1);
+B4 = UVicISCraw(:,2);
+
+figure(3)
+plot(A1,B1)
+hold on
+plot(A2,B2)
+plot(A3,B3)
+plot(A4,B4)
+hold off
+grid on
+datetick('x')
+title('Cleaned Minute Temperature Data')
+ylabel('Temperature (Degree Celcius)','fontsize',8)
+legend('Deep Cove', 'James Bay', 'John Muir', 'UVic ISC')
+
+
+%%
+%-----------------------------
+% Monthly Mean Temperature
+%-----------------------------
+
+
+tts_1 = datenum(2008,1,1,0,0,0);   %-- start time [PDT]
+tte_1 = datenum(2008,12,31,24,0,0);  %-- end time [PDT]
+iiH_1 = find(A1 >= tts_1 & A1 < tte_1); %-- indices of specified data range
+A1sub = A1(iiH_1);
+B1sub = B1(iiH_1);
+
+tts_2 = datenum(2009,1,1,0,0,0);   %-- start time [PDT]
+tte_2 = datenum(2009,12,31,24,0,0);  %-- end time [PDT]
+iiH_2 = find(A1 >= tts_2 & A1 < tte_2); %-- indices of specified data range
+A1sub2 = A1(iiH_2);
+B1sub2 = B1(iiH_2);
+
+
+tts_3 = datenum(2010,1,1,0,0,0);   %-- start time [PDT]
+tte_3 = datenum(2010,12,31,24,0,0);  %-- end time [PDT]
+iiH_3 = find(A1 >= tts_3 & A1 < tte_3); %-- indices of specified data range
+A1sub3 = A1(iiH_3);
+B1sub3 = B1(iiH_3);
+
+a = datenum(1,0,0,0,0,0);
+yy1 = smooth(B1sub,1/12,'moving');
+yy2 = smooth(B1sub2,1/12,'moving');
+yy3 = smooth(B1sub3,1/12,'moving');
+
+%------------------------------------------------
+
+tts_11 = datenum(2008,1,1,0,0,0);   %-- start time [PDT]
+tte_11 = datenum(2008,12,31,24,0,0);  %-- end time [PDT]
+iiH_11 = find(A2 >= tts_11 & A2 < tte_11); %-- indices of specified data range
+A2sub = A2(iiH_1);
+B2sub = B2(iiH_1);
+
+tts_21 = datenum(2009,1,1,0,0,0);   %-- start time [PDT]
+tte_21 = datenum(2009,12,31,24,0,0);  %-- end time [PDT]
+iiH_21 = find(A2 >= tts_21 & A2 < tte_21); %-- indices of specified data range
+A2sub2 = A2(iiH_21);
+B2sub2 = B2(iiH_21);
+
+
+tts_31 = datenum(2010,1,1,0,0,0);   %-- start time [PDT]
+tte_31 = datenum(2010,12,31,24,0,0);  %-- end time [PDT]
+iiH_31 = find(A2 >= tts_31 & A2 < tte_31); %-- indices of specified data range
+A2sub3 = A2(iiH_31);
+B2sub3 = B2(iiH_31);
+
+a = datenum(1,0,0,0,0,0);
+yy11 = smooth(B2sub,1/12,'moving');
+yy21 = smooth(B2sub2,1/12,'moving');
+yy31 = smooth(B2sub3,1/12,'moving');
+
+
+%--------------------------------------------------------
+
+tts_12 = datenum(2008,1,1,0,0,0);   %-- start time [PDT]
+tte_12 = datenum(2008,12,31,24,0,0);  %-- end time [PDT]
+iiH_12 = find(A3 >= tts_12 & A3 < tte_12); %-- indices of specified data range
+A3sub = A3(iiH_12);
+B3sub = B3(iiH_12);
+
+tts_22 = datenum(2009,1,1,0,0,0);   %-- start time [PDT]
+tte_22 = datenum(2009,12,31,24,0,0);  %-- end time [PDT]
+iiH_22 = find(A3 >= tts_22 & A3 < tte_22); %-- indices of specified data range
+A3sub2 = A3(iiH_22);
+B3sub2 = B3(iiH_22);
+
+
+tts_32 = datenum(2010,1,1,0,0,0);   %-- start time [PDT]
+tte_32 = datenum(2010,12,31,24,0,0);  %-- end time [PDT]
+iiH_32 = find(A3 >= tts_32 & A3 < tte_32); %-- indices of specified data range
+A3sub3 = A3(iiH_32);
+B3sub3 = B3(iiH_32);
+
+a = datenum(1,0,0,0,0,0);
+yy12 = smooth(B3sub,1/12,'moving');
+yy22 = smooth(B3sub2,1/12,'moving');
+yy32 = smooth(B3sub3,1/12,'moving');
+
+%------------------------------------------
+    
+tts_13 = datenum(2008,1,1,0,0,0);   %-- start time [PDT]
+tte_13 = datenum(2008,12,31,24,0,0);  %-- end time [PDT]
+iiH_13 = find(A4 >= tts_13 & A4 < tte_13); %-- indices of specified data range
+A4sub = A4(iiH_13);
+B4sub = B4(iiH_13);
+
+tts_23 = datenum(2009,1,1,0,0,0);   %-- start time [PDT]
+tte_23 = datenum(2009,12,31,24,0,0);  %-- end time [PDT]
+iiH_23 = find(A4 >= tts_23 & A4 < tte_23); %-- indices of specified data range
+A4sub2 = A4(iiH_23);
+B4sub2 = B4(iiH_23);
+
+
+tts_33 = datenum(2010,1,1,0,0,0);   %-- start time [PDT]
+tte_33 = datenum(2010,12,31,24,0,0);  %-- end time [PDT]
+iiH_33 = find(A4 >= tts_33 & A4 < tte_33); %-- indices of specified data range
+A4sub3 = A4(iiH_33);
+B4sub3 = B4(iiH_33);
+
+a = datenum(1,0,0,0,0,0);
+yy13 = smooth(B4sub,1/12,'moving');
+yy23 = smooth(B4sub2,1/12,'moving');
+yy33 = smooth(B4sub3,1/12,'moving');
+
+%--------------------------
+%%
+figure(4)
+subplot(221)
+plot(A1sub,yy1,A1sub2-a,yy2,A1sub3-2*a,yy3)
+datetick('x')
+grid on
+title('Monthly Average Temperature; Deep Cove Station','FontSize', 8)
+axis([-inf,inf,-inf,22])
+ylabel('Temperature (^{\circ}C)')
+legend('2008','2009','2010','location','northwest')
+
+subplot(222)
+plot(A2sub,yy11,A2sub2-a,yy21,A2sub3-2*a,yy31)
+datetick('x')
+grid on
+title('Monthly Average Temperature; James Bay Station','FontSize', 8)
+axis([-inf,inf,-inf,22])
+ylabel('Temperature (^{\circ}C)')
+
+%legend('2008','2009','2010')
+
+subplot(223)
+plot(A3sub,yy12,A3sub2-a,yy22,A3sub3-2*a,yy32)
+datetick('x')
+grid on
+title('Monthly Average Temperature; John Muir Station','FontSize', 8)
+axis([-inf,inf,-inf,22])
+ylabel('Temperature (^{\circ}C)')
+%legend('2008','2009','2010')
+
+subplot(224)
+plot(A4sub,yy13,A4sub2-a,yy23,A4sub3-2*a,yy33)
+datetick('x')
+grid on
+title('Monthly Average Temperature; UVic ISC Station','FontSize', 8)
+axis([-inf,inf,-inf,22])
+ylabel('Temperature (^{\circ}C)')
+%legend('2008','2009','2010')
+
+
+
+
+%%
+%-----------------------------
+% Power Spectra
+%-----------------------------
+Fs = 10000;                                  %B1
+BBt =detrend(B1);
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+figure(5)
+subplot(221)
+plot(freq,10*log10(psdx))
+grid on
+title('Power Spectrum - Deep Cove')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+
+BBt =detrend(B2);                            %B2
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+
+subplot(222)
+plot(freq,10*log10(psdx))
+grid on
+title('Power Spectrum - James Bay')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+
+hold on
+BBt =detrend(B3);                           %B3
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+
+subplot(223)
+plot(freq,10*log10(psdx))
+grid on
+title('Power Spectrum - John Muir')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+
+BBt =detrend(B4);                           %B4
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+
+subplot(224)
+plot(freq,10*log10(psdx))
+grid on
+title('Power Spectrum - Uvic ISC')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+hold off
+
+%%
+%-----------------------------
+% Power Spectra - moving avg
+%-----------------------------
+
+
+
+
+
+Fs = 10000;                                  %B1
+BBt =detrend(B1);
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+figure(6)
+subplot(221)
+psdxsmooth = smooth(10*log10(psdx),100,'moving');
+plot(freq,psdxsmooth)
+grid on
+title('Power Spectrum - Deep Cove')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+
+BBt =detrend(B2);                            %B2
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+
+subplot(222)
+psdxsmooth = smooth(10*log10(psdx),100,'moving');
+plot(freq,psdxsmooth)
+grid on
+title('Power Spectrum - James Bay')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+
+hold on
+BBt =detrend(B3);                           %B3
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+
+subplot(223)
+psdxsmooth = smooth(10*log10(psdx),100,'moving');
+plot(freq,psdxsmooth)
+grid on
+title('Power Spectrum - John Muir')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+
+BBt =detrend(B4);                           %B4
+N = length(BBt);
+xdft = fft(BBt);
+xdft = xdft(1:N/2+1);
+psdx = (1/(Fs*N)) * abs(xdft).^2;
+psdx(2:end-1) = 2*psdx(2:end-1);
+freq = 0:Fs/length(BBt):Fs/2;
+
+
+subplot(224)
+psdxsmooth = smooth(10*log10(psdx),100,'moving');
+plot(freq,psdxsmooth)
+grid on
+title('Power Spectrum - Uvic ISC')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+axis([-inf,inf,-150,50])
+hold off
+
+
+
+
+
+
+
+
+
+%%
+%---------------------------------------
+% Pwelch Estimate
+%---------------------------------------
+
+fs = 10000;
+L = 25;
+noverlap = 0;
+[pxx,f] = pwelch(B2,hamming(L),noverlap,200,fs,'power');
+figure(2)
+plot(f,10*log10(pxx))
+title('Pwelch Estimate - James Bay')
+xlabel('Frequency (Hz)')
+ylabel('Power/Frequency (dB/Hz)')
+hold on
+%plot(f,10*log10(pxxc),'r-.')
+hold off
+
+%%
+%---------------------------------------
+% PDF Calculations
+%---------------------------------------
+
+mb1 = mean(B1);
+sb1 = std(B1);
+y1 = pdf('normal',B1,mb1,sb1);
+
+mb2 = mean(B2);
+sb2 = std(B2);
+y2 = pdf('normal',B2,mb2,sb2);
+
+mb3 = mean(B3);
+sb3 = std(B3);
+y3 = pdf('normal',B3,mb3,sb3);
+
+mb4 = mean(B4);
+sb4 = std(B4);
+y4 = pdf('normal',B4,mb4,sb4);
+
+figure(5)
+plot(B1,y1,'.',B2,y2,'.',B3,y3,'.',B4,y4,'.')
+title('test','FontSize', 8)
+xlabel('Temperature ( ^{\circ}C)')
+ylabel('Probability')
+grid on
+title('Temperature Probabilty - Minute Data')
+legend('Deep Cove', 'James Bay', 'John Muir', 'UVic ISC')
+
+
+%%
+%-----------------------------
+% Correlations
+%-----------------------------
+
+%Recall
+%A1 = DeepCoverawCopy(:,1);
+%B1 = DeepCoverawCopy(:,2);
+%A2 = JamesBayrawCopy(:,1);
+%B2 = JamesBayrawCopy(:,2);
+%A3 = JohnMuirraw(:,1);
+%B3 = JohnMuirraw(:,2);
+%A4 = UVicISCraw(:,1);
+%B4 = UVicISCraw(:,2);
+
+maxLength = max([length(B1), length(B2), length(B3), length(B4)]);
+B1(length(B1)+1:maxLength) = 0;
+B2(length(B2)+1:maxLength) = 0;
+B3(length(B3)+1:maxLength) = 0;
+B4(length(B4)+1:maxLength) = 0;
+
+
+R12 = corr(B1,B2);
+R13 = corr(B1,B3);
+R14 = corr(B1,B4);
+R23 = corr(B2,B3);
+R24 = corr(B2,B4);
+R34 = corr(B3,B4);
+  
+    %corrleations
+R12
+R13
+R14
+R23
+R24
+R34
+
+
+
+
+%%
+%---------------------------------------
+% Min Max Values
+%---------------------------------------
+
+% Min/max Value
+%2008
+
+[M,I] = min(B1sub3);
+H =datestr(A1sub3(I,1));
+M,H
+
+B2sub
+A2sub
+B3sub
+A3sub
+B4sub
+A4sub
+
+%2009
+B1sub2
+A1sub2
+B2sub2
+A2sub2
+B3sub2
+A3sub2
+B4sub2
+A4sub2
+
+
+%2010
+B1sub3
+A1sub3
+B2sub3
+A2sub3
+B3sub3
+A3sub3
+B4sub3
+A4sub3
+%%
+
+%-----------------------------
+% EOF Calculations using PCACOV and Gather to deal with Tall Array
+%-----------------------------
+
+c = cov(AllHourly1RC);
+c = gather(c);
+
+[coeff,latent,explained] = pcacov(c)
+
+
+%%
+
+%-----------------------------
+% Eof Weights
+%-----------------------------
+
+
+figure(7)
+plot(explained,'o','MarkerFaceColor','r','MarkerEdgeColor','k')
+title('Weight Percentage of EOF Modes')
+xlabel('Mode')
+ylabel('Percent Weight')
+legend('Mode')
+grid on
+
+
+%%
+%-----------------------------
+% All EOF Plots 
+%-----------------------------
+
+
+figure(8)
+hold on
+for n = 1:5
+    p = poly2sym(coeff(:,n));
+    ezplot(p)
+end
+hold off
+title('EOF Modes - First Five')
+axis([-2,2,-2,2])
+legend('Mode 1','Mode 2','Mode 3','Mode 4','Mode 5')
+%%
+%-----------------------------
+% First 5 EOF Mode Plots
+%-----------------------------
+
+
+figure(11)
+suptitle('First Five Modes')
+subplot(321)
+p = poly2sym(coeff(:,1));
+ezplot(p)
+title('EOF Modes - First Mode')
+grid on
+axis([-2,2,-2,2])
+
+subplot(322)
+p = poly2sym(coeff(:,2));
+ezplot(p)
+grid on
+title('EOF Modes - Second Mode')
+axis([-2,2,-2,2])
+
+subplot(323)
+p = poly2sym(coeff(:,3));
+ezplot(p)
+grid on
+title('EOF Modes - Third Mode')
+axis([-2,2,-2,2])
+get(gca,'position')
+
+subplot(324)
+p = poly2sym(coeff(:,4));
+ezplot(p)
+grid on
+title('EOF Modes - Fourth Mode')
+axis([-2,2,-2,2])
+get(gca,'position')
+
+subplot('position',[0.3503 0.11 0.3347 0.2157])
+p = poly2sym(coeff(:,5));
+ezplot(p)
+grid on
+title('EOF Modes - Fifth Mode')
+axis([-2,2,-2,2])
+get(gca,'position')
+%%
+
+%-----------------------------
+% Gridding Attemps
+%-----------------------------
+
+
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly(:,1)),AllHourly(:,2),AllHourly1(:,26277),X,Y,'nearest');
+figure(8)
+subplot(211)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly(:,1)),AllHourly(:,2),'o')
+title('Interpolated Mapping - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly(:,1)),AllHourly(:,2),AllHourly1(:,26277),X,Y,'cubic');
+subplot(212)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly(:,1)),AllHourly(:,2),'o')
+title('Interpolated Mapping - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+%%
+
+%-----------------------------
+% Plot of Hourly Data
+%-----------------------------
+
+figure(10)
+hold on
+for n = 1:35
+    N = 1:length(AllHourly(n,:));
+    plot(N,AllHourly(n,:))
+end
+hold off
+title('Hourly Temperature Data')
+xlabel('Time: Jan 2008 > Dec 2010')
+ylabel('Temperature')
+axis([-inf,inf,-15,50])
+set(gca, 'XTickLabelMode', 'manual', 'XTickLabel', []);
+
+
+
+%%
+
+%-----------------------------
+% Histogram Plots
+%-----------------------------
+
+figure(1)
+subplot(221)
+histogram(B1)
+subplot(222)
+histogram(B2)
+subplot(223)
+histogram(B3)
+subplot(224)
+histogram(B4)
+%%
+
+%-----------------------------
+% Interpolated Gridded Data Full
+%-----------------------------
+
+
+            % JULY 08  %
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([2:11,13:19,21:22,24:34],1)),AllHourly([2:11,13:19,21:22,24:34],2),HourTempJuly08sum,X,Y,'nearest');
+figure(8)
+subplot(321)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:11,13:19,21:22,24:34],1)),AllHourly([2:11,13:19,21:22,24:34],2),'o')
+title('Interpolated Mapping July 08 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([2:11,13:19,21:22,24:34],1)),AllHourly([2:11,13:19,21:22,24:34],2),HourTempJuly08sum,X,Y,'cubic');
+subplot(322)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:11,13:19,21:22,24:34],1)),AllHourly([2:11,13:19,21:22,24:34],2),'o')
+title('Interpolated Mapping July 08 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+            %July 09%
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],1)),AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],2),HourTempJuly09sum,X,Y,'nearest');
+figure(8)
+subplot(323)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],1)),AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],2),'o')
+title('Interpolated Mapping July 09 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],1)),AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],2),HourTempJuly09sum,X,Y,'cubic');
+subplot(324)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],1)),AllHourly([2:14,16:17,19,21:22,24:25,27:30,33:34],2),'o')
+title('Interpolated Mapping July 09 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+            
+            
+            %july 10%
+            
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([2:11,13:22,24:35],1)),AllHourly([2:11,13:22,24:35],2),HourTempJuly10sum,X,Y,'nearest');
+figure(8)
+subplot(325)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:11,13:22,24:35],1)),AllHourly([2:11,13:22,24:35],2),'o')
+title('Interpolated Mapping July 10 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([2:11,13:22,24:35],1)),AllHourly([2:11,13:22,24:35],2),HourTempJuly10sum,X,Y,'cubic');
+subplot(326)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:11,13:22,24:35],1)),AllHourly([2:11,13:22,24:35],2),'o')
+title('Interpolated Mapping July 10 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+%%
+            % Mar 08  %
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([1:19,22:26,28:35],1)),AllHourly([1:19,22:26,28:35],2),HourTempMar08sum,X,Y,'nearest');
+figure(9)
+subplot(321)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:19,22:26,28:35],1)),AllHourly([1:19,22:26,28:35],2),'.','linewidth',0.01)
+title('Interpolated Mapping March 08 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([1:19,22:26,28:35],1)),AllHourly([1:19,22:26,28:35],2),HourTempMar08sum,X,Y,'cubic');
+subplot(322)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:19,22:26,28:35],1)),AllHourly([1:19,22:26,28:35],2),'.')
+title('Interpolated Mapping March 08 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+            %Mar 09%
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([1:19,21:29,31:35],1)),AllHourly([1:19,21:29,31:35],2),HourTempMar09sum,X,Y,'nearest');
+figure(9)
+subplot(323)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:19,21:29,31:35],1)),AllHourly([1:19,21:29,31:35],2),'.')
+title('Interpolated Mapping March 09 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([1:19,21:29,31:35],1)),AllHourly([1:19,21:29,31:35],2),HourTempMar09sum,X,Y,'cubic');
+subplot(324)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:19,21:29,31:35],1)),AllHourly([1:19,21:29,31:35],2),'.')
+title('Interpolated Mapping March 09 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+            
+            
+            %Mar 10%
+            
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([2:5,7:10,13:22,25:26,28:34],1)),AllHourly([2:5,7:10,13:22,25:26,28:34],2),HourTempMar10sum,X,Y,'nearest');
+figure(9)
+subplot(325)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:5,7:10,13:22,25:26,28:34],1)),AllHourly([2:5,7:10,13:22,25:26,28:34],2),'.')
+title('Interpolated Mapping March 10 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([2:5,7:10,13:22,25:26,28:34],1)),AllHourly([2:5,7:10,13:22,25:26,28:34],2),HourTempMar10sum,X,Y,'cubic');
+subplot(326)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:5,7:10,13:22,25:26,28:34],1)),AllHourly([2:5,7:10,13:22,25:26,28:34],2),'.')
+title('Interpolated Mapping March 10 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+%%
+
+            % Dec 08  %
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([1:8,10:12,15,17:19,21:35],1)),AllHourly([1:8,10:12,15,17:19,21:35],2),HourTempDec08sum,X,Y,'nearest');
+figure(10)
+subplot(321)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:8,10:12,15,17:19,21:35],1)),AllHourly([1:8,10:12,15,17:19,21:35],2),'.','linewidth',0.01)
+title('Interpolated Mapping December 08 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([1:8,10:12,15,17:19,21:35],1)),AllHourly([1:8,10:12,15,17:19,21:35],2),HourTempDec08sum,X,Y,'cubic');
+subplot(322)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:8,10:12,15,17:19,21:35],1)),AllHourly([1:8,10:12,15,17:19,21:35],2),'.')
+title('Interpolated Mapping December 08 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+            %Dec 09%
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([1:22,24:35],1)),AllHourly([1:22,24:35],2),HourTempDec09sum,X,Y,'nearest');
+figure(10)
+subplot(323)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:22,24:35],1)),AllHourly([1:22,24:35],2),'.')
+title('Interpolated Mapping December 09 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([1:22,24:35],1)),AllHourly([1:22,24:35],2),HourTempDec09sum,X,Y,'cubic');
+subplot(324)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([1:22,24:35],1)),AllHourly([1:22,24:35],2),'.')
+title('Interpolated Mapping December 09 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+            
+            
+            %Dec 10%
+            
+[X,Y] = meshgrid(-124:0.005:-123.2,48.3:0.005:49);
+Z = griddata(-(360 - AllHourly([2:11,13:14,16:22,24:35],1)),AllHourly([2:11,13:14,16:22,24:35],2),HourTempDec10sum,X,Y,'nearest');
+figure(10)
+subplot(325)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:11,13:14,16:22,24:35],1)),AllHourly([2:11,13:14,16:22,24:35],2),'.')
+title('Interpolated Mapping December 10 - Nearest Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
+
+Z = griddata(-(360 - AllHourly([2:11,13:14,16:22,24:35],1)),AllHourly([2:11,13:14,16:22,24:35],2),HourTempDec10sum,X,Y,'cubic');
+subplot(326)
+colormap(jet)
+contourf(X,Y,Z,'edgecolor','none')
+hold on
+%plot(Coast(:,1),Coast(:,2),'k')
+patch(Coast(:,1),Coast(:,2),'w')
+plot(-(360 - AllHourly([2:11,13:14,16:22,24:35],1)),AllHourly([2:11,13:14,16:22,24:35],2),'.')
+title('Interpolated Mapping December 10 - Cubic Method')
+xlabel('Longitude')
+ylabel('Latitude')
+hold off
+hdlb = colorbar;
+ylabel(hdlb,'Temperature')
